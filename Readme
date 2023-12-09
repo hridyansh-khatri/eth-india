@@ -1,0 +1,24 @@
+## Idea
+
+Social Content Verification for trustless and verifiable on-chain verification of content based ideas
+
+## Smart Contracts
+
+Deployed on Scroll Testnet
+
+''' Scroll Sepolia Address: 0x55F7a2fF1F40E122b371EA9B6e730EFf293b5b68 '''
+''' Scroll Sepolia Link: https://sepolia.scrollscan.com/address/0x55f7a2ff1f40e122b371ea9b6e730eff293b5b68 '''
+
+Compile Contracts :
+
+'''forge build --via-ir'''
+
+## Subgraphs
+
+Codegen and Build:
+
+'''graph codegen && graph build'''
+
+Subgraph built and deployed on
+
+''' Current Deployment : https://api.studio.thegraph.com/query/22787/verify-content-eth-india/v0.0.3/graphql '''
