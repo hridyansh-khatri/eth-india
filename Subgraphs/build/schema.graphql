@@ -1,0 +1,79 @@
+enum ContentStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  DISPUTED
+}
+
+enum DisputeStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ContentType {
+  IMAGE
+  TEXT
+}
+
+type ProtocolConstants @entity(immutable: true) {
+  id: Bytes! @id # Using Constant Value here
+  minimumValidataorRequired: BigInt!
+  verificationFee: BigInt!
+}
+
+type Transaction @entity(immutable: true) {
+  id: Bytes! @id # Using Hash as the Id
+  from: Bytes!
+  to: Bytes
+  value: BigDecimal!
+  timestamp: BigInt!
+  block: BigInt!
+  blockHash: Bytes!
+  gasPrice: BigDecimal!
+  input: String!
+}
+
+type Creator @entity {
+  id: Bytes! @id #address
+  content: [Content!] @derviedFrom(field: "creator") # Content
+  disputedContent: [Dispute!] @derviedFrom(field: "creator")
+}
+
+type Content @entity {
+  id: Bytes! @id # Content Hash
+  transaction: Transaction! # Transaction
+  creator: Creator! # Creator
+  contentHash: Bytes!
+  contentCid: Bytes!
+  creationTimestamp: BigInt!
+  verificationTimestamp: BigInt!
+  validator: [Bytes!] # Validator Address
+  currentDispute: Dispute # Current Running Dispute
+  disputes: [Dispute!] @derviedFrom(field: "content") # Content Related Disputes
+  name: String!
+  type: ContentType!
+  dataCid: String!
+  socials: [SocialLink!] # Social Links
+  status: ContentStatus! # Current Status
+}
+
+type SocialLink @entity {
+  id: Bytes! @id # Keccakhash of the link as this is generally never required to be used again
+  platform: String! # Can be an ENUM
+  link: String! # Links
+}
+
+type Dispute @entity {
+  id: Bytes! @id # Dispute Creation Transaction
+  transaction: Transaction! # Creation Transaction
+  content: Content! # Content Under Dispute
+  disputor: Bytes! # Disputor Address
+  creator: Bytes! # Creator Address
+  currentStatus: DisputeStatus! # Current Dispute Status
+}
+
+type Validator @entity {
+  id: Bytes! @id # address
+  transaction: Transaction! # Creation Transaction
+  contentVerified: [Content!] @derviedFrom(field: "validator")
+}

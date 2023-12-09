@@ -1,0 +1,8 @@
+{
+  "scroll-sepolia": {
+    "ContentAuth": {
+      "address": "0x684516f519459fF1Ed2a719D96903350Fa227e23",
+      "startBlock": 2536295
+    }
+  }
+}
