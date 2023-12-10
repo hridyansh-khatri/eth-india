@@ -1,6 +1,13 @@
 import { SDKProvider } from "@metamask/sdk";
 import lighthouse from "@lighthouse-web3/sdk";
-import { createPublicClient, createWalletClient, custom, http } from "viem";
+import {
+  createPublicClient,
+  createWalletClient,
+  custom,
+  http,
+  parseUnits,
+  toHex,
+} from "viem";
 import { verifyContractAbi } from "../assets/VerifyContract";
 import { scrollSepolia } from "viem/chains";
 
@@ -18,7 +25,7 @@ interface ContentMetadata {
 }
 
 /// Utility Function to send transaction for Function call "addContentForVerification"
-const addRequestForVerification = async (
+export const addRequestForVerification = async (
   provider: SDKProvider,
   data: ContentMetadata,
   contentHash: string
@@ -28,6 +35,7 @@ const addRequestForVerification = async (
 
   const wallet = createWalletClient({
     transport: custom(provider),
+    chain: scrollSepolia,
   });
 
   const { request } = await client.simulateContract({
@@ -39,13 +47,39 @@ const addRequestForVerification = async (
       contentMetadataCid as `0x${string}`,
       signature as `0x${string}`,
     ],
+    value: parseUnits("0.1", 18),
   });
 
   const response = await wallet.writeContract(request);
 };
 
+export const raiseDispute = async (
+  provider: SDKProvider,
+  disputeMetadata: any,
+  contentHash: string
+) => {
+  const signature = await sign_message_hash(provider, contentHash);
 
+  const disputeCid = await upload_content_metadata(disputeMetadata);
 
+  const wallet = createWalletClient({
+    transport: custom(provider),
+    chain: scrollSepolia,
+  });
+
+  const { request } = await client.simulateContract({
+    abi: verifyContractAbi,
+    address: verifyContractAddress as `0x${string}`,
+    functionName: "raiseDispute",
+    args: [
+      contentHash as `0x${string}`,
+      disputeCid as `0x${string}`,
+      toHex(signature as string),
+    ],
+  });
+
+  await wallet.writeContract(request);
+};
 
 /// Utility Function to sign content hash
 const sign_message_hash = async (provider: SDKProvider, contentHash: any) => {
