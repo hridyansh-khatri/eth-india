@@ -7,7 +7,11 @@ import {
   usePersistSafeAuthStore,
   useSafeAuthStore,
 } from "@/store/safeAuthStore";
+import { init } from "@/lib/safeConf";
 import { BrowserProvider, Eip1193Provider, ethers } from "ethers";
+import { ApolloProvider } from "@apollo/client";
+import { makeClient } from "@/lib/apollo";
+import { ApolloNextAppProvider } from "@apollo/experimental-nextjs-app-support/ssr";
 
 export default function AllProviders({
   children,
@@ -42,6 +46,26 @@ export default function AllProviders({
       });
     })();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      init((safeAuthPack) => {
+        setSafeAuthPack(safeAuthPack);
+        safeAuthPack.subscribe("accountsChanged", async (accounts) => {
+          console.log(
+            "safeAuthPack:accountsChanged",
+            accounts,
+            safeAuthPack.isAuthenticated
+          );
+          if (safeAuthPack.isAuthenticated) {
+            const signInInfo = await safeAuthPack?.signIn();
+            setSafeAuthSignInResponse(signInInfo);
+            setIsAuthenticated(true);
+          }
+        });
+      });
+    }, 1000);
+  }, []);
   useEffect(() => {
     if (!safeAuthPack || !isAuthenticated) return;
     (async () => {
@@ -59,22 +83,24 @@ export default function AllProviders({
         setProvider(provider);
       }
     })();
-  }, [isAuthenticated, safeAuthPack]);
+  }, [isAuthenticated]);
   if (renderd)
     return (
-      <MetaMaskProvider
-        debug={false}
-        sdkOptions={{
-          checkInstallationImmediately: false,
-          defaultReadOnlyChainId: CHAIN_ID,
-          dappMetadata: {
-            name: "Demo React App",
-            url: location.origin,
-          },
-        }}
-      >
-        {children}
-      </MetaMaskProvider>
+      <ApolloNextAppProvider makeClient={makeClient}>
+        <MetaMaskProvider
+          debug={false}
+          sdkOptions={{
+            checkInstallationImmediately: false,
+            defaultReadOnlyChainId: CHAIN_ID,
+            dappMetadata: {
+              name: "Demo React App",
+              url: location.origin,
+            },
+          }}
+        >
+          {children}
+        </MetaMaskProvider>
+      </ApolloNextAppProvider>
     );
   return <>{children}</>;
 }
