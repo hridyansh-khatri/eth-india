@@ -4,6 +4,8 @@ Social Content Verification for trustless and verifiable on-chain verification o
 
 ## Smart Contracts
 
+Build using Foundry
+
 Deployed on Scroll Testnet
 
 ''' Scroll Sepolia Address: 0x55F7a2fF1F40E122b371EA9B6e730EFf293b5b68 '''
@@ -22,3 +24,10 @@ Codegen and Build:
 Subgraph built and deployed on
 
 ''' Current Deployment : https://api.studio.thegraph.com/query/22787/verify-content-eth-india/v0.0.3/graphql '''
+
+
+## Frontend 
+
+Built using next 13 
+
+'''npx run 
