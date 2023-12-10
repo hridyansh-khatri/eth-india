@@ -95,6 +95,6 @@ const sign_message_hash = async (provider: SDKProvider, contentHash: any) => {
 const upload_content_metadata = async (
   contentMetadata: ContentMetadata
 ): Promise<string> => {
-  const wallet = await lighthouse.uploadText();
+//   const wallet = await lighthouse.uploadText();
   return "asdfads";
 };
