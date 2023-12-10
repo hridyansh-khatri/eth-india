@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lighthouse-web3/sdk": "^0.3.0",
+    "@metamask/sdk": "^0.14.1",
     "@metamask/sdk-react": "^0.14.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@safe-global/auth-kit": "^2.0.0",
@@ -22,6 +24,7 @@
     "react-icons": "^4.12.0",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
+    "viem": "^1.19.11",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
