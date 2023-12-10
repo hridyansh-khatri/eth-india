@@ -1,10 +1,10 @@
 ## Idea
 
-Social Content Verification for trustless and verifiable on-chain verification of content based ideas
+Social Content Verification for trustless and verifiable on-chain verification of content to avoid misappropriation and fakes.
 
 ## Smart Contracts
 
-Build using Foundry
+Built using Foundry and Openzepplin Contracts
 
 Deployed on Scroll Testnet
 
@@ -14,6 +14,14 @@ Deployed on Scroll Testnet
 Compile Contracts :
 
 '''forge build --via-ir'''
+
+Test Contract :
+
+''' forge test '''
+
+Deploy Contract :
+
+''' forge script scripts/Deploy.s.sol --broadcast --rpc-url <YOUR-RPC-URL>'''
 
 ## Subgraphs
 
@@ -25,9 +33,18 @@ Subgraph built and deployed on
 
 ''' Current Deployment : https://api.studio.thegraph.com/query/22787/verify-content-eth-india/v0.0.3/graphql '''
 
+## Frontend
 
-## Frontend 
+Built using next 13
 
-Built using next 13 
+Technologies Used:
 
-'''npx run 
+MetamaskSDK we have employed the SDK to create connection with blockchain and wallet connects.
+Metamask/react-sdk for custom hooks realated to metamask handling
+Safe auth-SDK for AA and social login to make the platform more accesible for new comers
+
+Install dependencies using:
+'''yarn '''
+
+Run Locally using :
+'''yarn dev '''
